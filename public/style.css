@@ -1,0 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fredoka:wght@600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f28e52;
+  font-family: 'Fredoka', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  color: #ffffff;
+  transition: background-color 5s linear;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 380px;
+  padding: calc(30px + env(safe-area-inset-top)) 20px 20px 20px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.logo {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 3.8rem;
+  color: #000000;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.view-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 1; 
+}
+
+.bottom-actions {
+  margin-top: auto; 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-bottom: calc(15px + env(safe-area-inset-bottom));
+}
+
+#roleView.view-container, #nightView.view-container, #dayView.view-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;     
+  flex-grow: 1;
+  width: 100%;
+  padding: 0;
+  position: relative;
+}
+
+.card {
+  background-color: #fcd8b3;
+  width: 100%;
+  border-radius: 32px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: none; 
+  transition: background-color 5s linear;
+}
+
+.hidden {
+  display: none !important;
+}
+
+input[type="text"] {
+  width: 100%;
+  background-color: #fcd8b3;
+  border: none;
+  border-radius: 50px; 
+  padding: 16px 25px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: left; 
+  outline: none;
+}
+
+input[type="text"]::placeholder {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+.player-count {
+  background-color: #fca758;
+  border-radius: 16px;
+  padding: 10px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.player-row {
+  background-color: #fca758;
+  border-radius: 50px; 
+  padding: 14px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.player-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.status-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green {
+  background-color: #00ff38; 
+  box-shadow: 0 0 8px rgba(0, 255, 56, 0.5);
+}
+
+.dot-gray {
+  background-color: #a3a3a3; 
+}
+
+.dot-red {
+  background-color: #ff3b3b; 
+}
+
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: 50px; 
+  padding: 14px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: #fca758;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.logs-container {
+  margin-top: 20px;
+  width: 100%;
+  font-size: 0.85rem;
+  color: #ffffff;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.countdown-banner {
+  background-color: #ff6b6b;
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 12px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.02); }
+}
+
+.night-countdown {
+  position: absolute; 
+  top: 15%;           
+  width: 100%;        
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  z-index: 110; 
+}
+
+.night-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.night-subtext {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ff3b3b;
+  letter-spacing: 1px;
+  margin-top: 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.night-timer {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 3rem;
+  color: #ff3b3b;
+  margin-top: 5px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.role-card {
+  background-color: #fcd8b3;
+  border: 3px dashed #ffffff;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%; 
+  max-width: 280px; 
+  aspect-ratio: 2.5 / 3.5; 
+  margin: 0; 
+  transition: transform 0.15s ease, background-color 5s linear, border-color 5s linear;
+}
+
+.role-card.covered {
+  background-color: #fca758;
+  border-style: solid;
+}
+
+.role-card:active {
+  transform: scale(0.96);
+}
+
+#cardInstruction {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 1px;
+  transition: color 5s linear;
+}
+
+.role-title {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 2.2rem;
+  color: #ff3b3b;
+  letter-spacing: 1px;
+}
+
+.night-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.night-header h2 {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 2.4rem;
+  color: #ff3b3b;
+}
+
+.night-header p {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 8px;
+}
+
+/* Stili Vista Giorno */
+.day-header {
+  text-align: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.day-header h2 {
+  font-family: 'Alfa Slab One', cursive;
+  font-size: 2.4rem;
+  color: #000000;
+}
+
+.outcome-banner {
+  background-color: #fcd8b3;
+  color: #000000;
+  border-radius: 16px;
+  padding: 12px 15px;
+  margin-top: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.outcome-banner.killed {
+  background-color: #ff3b3b;
+  color: #ffffff;
+}
+
+.vote-status-banner {
+  background-color: #fca758;
+  border-radius: 16px;
+  padding: 10px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.player-row.selectable {
+  cursor: pointer;
+}
+
+.player-row.selectable:active {
+  transform: scale(0.97);
+}
+
+.player-row.selected {
+  background-color: #ff3b3b !important;
+  border: 2px solid #ffffff;
+}
+
+.teammate-badge {
+  font-size: 0.75rem;
+  background-color: #ff3b3b;
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+body.night-mode {
+  background-color: #1a0f08; 
+}
+
+body.night-mode .role-card.covered {
+  background-color: #4a2c17; 
+  border-color: #4a2c17;
+}
+
+body.night-mode .role-card {
+  background-color: #664024; 
+  border-color: #331e10;
+}
+
+body.night-mode #cardInstruction {
+  color: #888888; 
+}
+
+body.night-mode .card {
+  background-color: #331e10;
+}
+
+body.night-mode .player-row {
+  background-color: #4a2c17;
+}
+
+body.night-mode .btn-primary {
+  background-color: #ff3b3b;
+}
+
+.player-row.disabled-row {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.player-row.wolf-targeted {
+  background-color: #ff3b3b !important;
+  border: 2px solid #ffffff;
+}
+
+#nightCountdownContainer {
+  margin-top: -100px; /* Aumenta il valore negativo (es. -20px o -25px) se vuoi alzarlo ancora di più */
+}

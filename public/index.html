@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta id="themeColor" name="theme-color" content="#f28e52">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lupus">
+    <title>Lupus</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="client.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <h1 id="mainLogo" class="logo">LUPUS</h1>
+
+        <!-- Vista 1: Login -->
+        <div id="joinView" class="view-container">
+            <input type="text" id="nickname" placeholder="NAME" autocomplete="off" maxlength="15">
+            <div class="bottom-actions">
+                <button onclick="joinGame()" class="btn btn-primary">Enter</button>
+            </div>
+        </div>
+
+        <!-- Vista 2: Lobby -->
+        <div id="lobbyView" class="view-container hidden">
+            <div id="playerCount" class="player-count hidden">numero giocatori: 0</div>
+
+            <div class="card">
+                <div id="playerList" class="player-list"></div>
+            </div>
+
+            <div class="bottom-actions">
+                <div id="countdownBanner" class="countdown-banner hidden">
+                    La partita inizia tra <span id="timer">3</span>...
+                </div>
+
+                <div id="lobbyButtons" style="display: flex; flex-direction: column; gap: 15px;">
+                    <button id="readyBtn" onclick="toggleReady()" class="btn btn-primary" disabled>Ready</button>
+                    <button id="exitBtn" onclick="leaveGame()" class="btn btn-primary">Exit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista 3: Ruolo Segreto -->
+        <div id="roleView" class="view-container hidden">
+            <div id="nightCountdownContainer" class="night-countdown hidden">
+                <div class="night-text">La notte sta per iniziare...</div>
+                <div class="night-subtext">CHIUDERE GLI OCCHI!</div>
+                <div id="nightTimer" class="night-timer">5</div>
+            </div>
+
+            <div id="roleCard" class="role-card covered" onclick="toggleRoleCard()">
+                <span id="cardInstruction">TOCCA PER SCOPRIRE</span>
+                <h2 id="roleTitle" class="role-title hidden">...</h2>
+            </div>
+        </div>
+
+        <!-- Vista 4: Fase Notte Attiva -->
+        <div id="nightView" class="view-container hidden">
+            <div class="night-header">
+                <h2 id="nightPhaseTitle">NOTTE 1</h2>
+                <p id="nightInstruction">La città dorme...</p>
+            </div>
+
+            <div id="nightActionCard" class="card hidden">
+                <div id="nightTargetList" class="player-list"></div>
+            </div>
+
+            <div class="bottom-actions">
+                <button id="nightConfirmBtn" onclick="submitNightAction()" class="btn btn-primary hidden"
+                    disabled>CONFERMA</button>
+            </div>
+        </div>
+
+        <!-- Vista 5: Fase Giorno e Votazione -->
+        <div id="dayView" class="view-container hidden">
+            <div class="day-header">
+                <h2 id="dayPhaseTitle">GIORNO</h2>
+                <div id="nightOutcomeBanner" class="outcome-banner">...</div>
+            </div>
+
+            <div id="dayVoteStatus" class="vote-status-banner">
+                Voti registrati: <span id="votedCount">0</span> / <span id="totalAliveCount">0</span>
+            </div>
+
+            <div id="dayActionCard" class="card">
+                <div id="dayTargetList" class="player-list"></div>
+            </div>
+
+            <div class="bottom-actions">
+                <button id="dayConfirmBtn" onclick="submitDayVote()" class="btn btn-primary" disabled>CONFERMA
+                    VOTO</button>
+            </div>
+        </div>
+
+        <!-- Vista 6: Fine Partita -->
+        <div id="gameOverView" class="view-container hidden">
+            <div class="day-header">
+                <h2 id="gameOverTitle"
+                    style="font-family: 'Alfa Slab One', cursive; font-size: 2.2rem; text-align: center; margin-bottom: 10px;">
+                    FINE PARTITA</h2>
+                <div id="gameOverWinnerBanner" class="outcome-banner"
+                    style="font-size: 1.1rem; text-align: center; margin-bottom: 20px;">...</div>
+            </div>
+
+            <div class="card">
+                <div id="gameOverPlayerList" class="player-list"></div>
+            </div>
+
+            <div class="bottom-actions" style="margin-top: 20px;">
+                <button onclick="returnToLobby()" class="btn btn-primary">TORNA IN LOBBY</button>
+            </div>
+        </div>
+
+        <div id="logs" class="logs-container"></div>
+    </div>
+</body>
+
+</html>
