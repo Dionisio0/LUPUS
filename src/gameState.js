@@ -4,7 +4,25 @@ import { generateRolesPool, ROLES } from "./roles.js";
 export const MAX_PLAYERS = 15;
 export const MIN_PLAYERS = 4;
 
-const vapidKeys = webPush.generateVAPIDKeys();
+// Le chiavi VAPID devono restare le stesse a ogni riavvio del server:
+// se cambiano, tutte le subscription push già salvate dai client diventano
+// invalide e le notifiche smettono di arrivare finché non si ri-iscrivono.
+let vapidKeys = {
+  publicKey: process.env.VAPID_PUBLIC_KEY,
+  privateKey: process.env.VAPID_PRIVATE_KEY,
+};
+
+if (!vapidKeys.publicKey || !vapidKeys.privateKey) {
+  console.warn(
+    "[push] VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY non impostate nelle variabili " +
+      "d'ambiente: genero una coppia temporanea valida solo per questa sessione " +
+      "del server. Le notifiche push smetteranno di funzionare al prossimo riavvio. " +
+      "Esegui `npx web-push generate-vapid-keys` e imposta le due variabili d'ambiente " +
+      "per risolvere in modo permanente.",
+  );
+  vapidKeys = webPush.generateVAPIDKeys();
+}
+
 webPush.setVapidDetails(
   "mailto:admin@lupusgame.com",
   vapidKeys.publicKey,
@@ -48,7 +66,26 @@ function notifyPlayerTurn(player, title, message) {
           vibrate: [400, 150, 400],
         }),
       )
-      .catch((err) => console.error("Errore Push:", err));
+      .catch((err) => {
+        if (err.statusCode === 404 || err.statusCode === 410) {
+          // Subscription scaduta o revocata dal browser: la rimuoviamo,
+          // il client dovrà ri-registrarsi (succede in automatico al
+          // prossimo "session:init").
+          console.warn(
+            `[push] Subscription non più valida per il player ${player.id}, la rimuovo.`,
+          );
+          gameState.pushSubscriptions.delete(player.id);
+        } else {
+          console.error(
+            `[push] Invio fallito per il player ${player.id} (status ${err.statusCode}):`,
+            err.body || err.message || err,
+          );
+        }
+      });
+  } else {
+    console.warn(
+      `[push] Nessuna subscription push registrata per il player ${player.id}: notifica non inviata.`,
+    );
   }
 }
 
