@@ -16,7 +16,7 @@ self.addEventListener("push", (event) => {
 
   const options = {
     body: data.body,
-    icon: "/icon.png",
+    icon: "/icon-192.png",
     vibrate: data.vibrate || [300, 100, 300, 100, 300],
     tag: "role-turn",
     renotify: true,
